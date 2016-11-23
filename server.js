@@ -3,8 +3,6 @@ const port = 4444;
 const host = "0.0.0.0";
 const dir = "./files";
 
-console.log(`http://${host}:${port}/`);
-
 const http = require("http");
 const fs = require("fs");
 
@@ -54,3 +52,15 @@ ${body}
 		}
 	}
 }).listen(port, host);
+
+
+const os = require("os");
+const networkInterfaces = os.networkInterfaces();
+Object.keys(networkInterfaces).forEach(key => {
+	networkInterfaces[key].filter(networkInterface => {
+		return networkInterface.family === "IPv4";
+	}).forEach(networkInterface => {
+		const host = networkInterface.address;
+		console.log(`${key}: http://${host}:${port}/`);
+	});
+});
