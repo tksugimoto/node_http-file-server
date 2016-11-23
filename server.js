@@ -14,21 +14,43 @@ http.createServer((req, res) => {
 	} else {
 		console.log(`[${new Date().toLocaleString()}] ${req.url}`);
 		const filename = req.url.match(/[/]([^/?]*)/)[1];
-		const filepath = `${dir}/${filename}`;
-		fs.readFile(filepath, "binary", (err, file) => {
-			if (err) {
+		if (filename === "") {
+			fs.readdir(dir, (err, files) => {
 				const header = {
-					"Content-Type": "text/plain"
+					"Content-Type": "text/html"
 				};
-				res.writeHead(404, header);
-				res.write(`Something wrong\n${filename}\nerr: ${err}`);
-				res.end();
-			} else {
-				const header = {};
 				res.writeHead(200, header);
-				res.write(file, "binary");
+				const body = files.map(file => {
+					return `<a href="${file}">${file}</a>`
+				}).join("<br>\n");
+				const html = `<html>
+<head>
+	<title>File一覧</title>
+</head>
+<body>
+${body}
+</body>
+</html>`;
+				res.write(html);
 				res.end();
-			}
-		});
+			});
+		} else {
+			const filepath = `${dir}/${decodeURIComponent(filename)}`;
+			fs.readFile(filepath, "binary", (err, file) => {
+				if (err) {
+					const header = {
+						"Content-Type": "text/plain"
+					};
+					res.writeHead(404, header);
+					res.write(`Something wrong\n${filename}\nerr: ${err}`);
+					res.end();
+				} else {
+					const header = {};
+					res.writeHead(200, header);
+					res.write(file, "binary");
+					res.end();
+				}
+			});
+		}
 	}
 }).listen(port, host);
