@@ -33,7 +33,7 @@ ${body}
 				res.end();
 			});
 		} else {
-			const filepath = `${dir}/${decodeURIComponent(filename)}`;
+			const filepath = `${dir}/${decodeURI(filename)}`;
 			fs.readFile(filepath, "binary", (err, file) => {
 				if (err) {
 					const header = {
