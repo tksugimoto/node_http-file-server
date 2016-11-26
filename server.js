@@ -42,13 +42,11 @@ ${body}
 					res.writeHead(404, header);
 					res.write(`File　Not Found: ${filename}`);
 					console.warn(err);
-					res.end();
 				} else {
-					const header = {};
-					res.writeHead(200, header);
+					res.writeHead(200);
 					res.write(file, "binary");
-					res.end();
 				}
+				res.end();
 			});
 		}
 	}
