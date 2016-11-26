@@ -18,7 +18,9 @@ http.createServer((req, res) => {
 					"Content-Type": "text/html"
 				};
 				res.writeHead(200, header);
-				const body = files.map(file => {
+				const body = files.filter(file => {
+					return file[0] !== ".";
+				}).map(file => {
 					return `<a href="${file}">${file}</a>`
 				}).join("<br>\n");
 				const html = `<html>
