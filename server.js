@@ -40,7 +40,8 @@ ${body}
 						"Content-Type": "text/plain"
 					};
 					res.writeHead(404, header);
-					res.write(`Something wrong\n${filename}\nerr: ${err}`);
+					res.write(`File　Not Found: ${filename}`);
+					console.warn(err);
 					res.end();
 				} else {
 					const header = {};
