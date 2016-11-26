@@ -45,6 +45,7 @@ ${body}
 				} else {
 					res.writeHead(200);
 					res.write(file, "binary");
+					console.log(`\treturn file: ${filepath}`);
 				}
 				res.end();
 			});
