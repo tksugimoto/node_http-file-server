@@ -18,17 +18,19 @@ http.createServer((req, res) => {
 					"Content-Type": "text/html"
 				};
 				res.writeHead(200, header);
-				const body = files.filter(file => {
+				const fileLists = files.filter(file => {
 					return file[0] !== ".";
 				}).map(file => {
-					return `<a href="${file}">${file}</a>`
-				}).join("<br>\n");
+					return `<li><a href="${file}">${file}</a></li>`
+				}).join("\n");
 				const html = `<html>
 <head>
 	<title>File一覧</title>
 </head>
 <body>
-${body}
+<ol>
+	${fileLists}
+</ol>
 </body>
 </html>`;
 				res.write(html);
