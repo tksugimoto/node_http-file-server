@@ -26,6 +26,11 @@ http.createServer((req, res) => {
 				const html = `<html>
 <head>
 	<title>File一覧</title>
+	<style>
+		body {
+			padding: 20px;
+		}
+	</style>
 </head>
 <body>
 <ol>
