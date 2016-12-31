@@ -21,7 +21,7 @@ http.createServer((req, res) => {
 				const fileLists = files.filter(file => {
 					return file[0] !== ".";
 				}).map(file => {
-					return `<li><a href="${file}">${file}</a></li>`
+					return `<li><a href="${encodeURIComponent(file)}">${file}</a></li>`
 				}).join("\n");
 				const html = `<html>
 <head>
@@ -42,14 +42,15 @@ http.createServer((req, res) => {
 				res.end();
 			});
 		} else {
-			const filepath = `${dir}/${decodeURI(filename)}`;
+			const decodedFilename = decodeURIComponent(filename).replace(/[/]/g, "");
+			const filepath = `${dir}/${decodedFilename}`;
 			fs.readFile(filepath, "binary", (err, file) => {
 				if (err) {
 					const header = {
 						"Content-Type": "text/plain"
 					};
 					res.writeHead(404, header);
-					res.write(`File　Not Found: ${filename}`);
+					res.write(`File　Not Found: ${decodedFilename}`);
 					console.warn(err);
 				} else {
 					res.writeHead(200);
