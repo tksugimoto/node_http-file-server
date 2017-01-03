@@ -44,20 +44,23 @@ http.createServer((req, res) => {
 		} else {
 			const decodedFilename = decodeURIComponent(filename).replace(/[/]/g, "");
 			const filepath = `${dir}/${decodedFilename}`;
-			fs.readFile(filepath, "binary", (err, file) => {
-				if (err) {
-					const header = {
-						"Content-Type": "text/plain"
-					};
-					res.writeHead(404, header);
-					res.write(`File　Not Found: ${decodedFilename}`);
-					console.warn(err);
-				} else {
-					res.writeHead(200);
-					res.write(file, "binary");
-					console.log(`\treturn file: ${filepath}`);
-				}
+
+			res.writeHead(200);
+			const fileStream = fs.createReadStream(filepath);
+			fileStream.on("error", err => {
+				fileStream.unpipe(res);
+				const header = {
+					"Content-Type": "text/plain"
+				};
+				res.writeHead(404, header);
+				res.write(`File　Not Found: ${decodedFilename}`);
+				console.warn(err);
 				res.end();
+			});
+			fileStream.pipe(res);
+			fileStream.on("end", () => {
+				// ファイルが存在する場合のみ
+				console.log(`\treturn file: ${filepath}`);
 			});
 		}
 	}
