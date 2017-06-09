@@ -15,7 +15,7 @@ http.createServer((req, res) => {
 		if (filename === "") {
 			fs.readdir(dir, (err, files) => {
 				const header = {
-					"Content-Type": "text/html"
+					"Content-Type": "text/html; charset=UTF-8"
 				};
 				res.writeHead(200, header);
 				const fileLists = files.filter(file => {
@@ -50,7 +50,7 @@ http.createServer((req, res) => {
 			fileStream.on("error", err => {
 				fileStream.unpipe(res);
 				const header = {
-					"Content-Type": "text/plain"
+					"Content-Type": "text/plain; charset=UTF-8"
 				};
 				res.writeHead(404, header);
 				res.write(`File　Not Found: ${decodedFilename}`);
