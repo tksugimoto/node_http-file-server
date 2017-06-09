@@ -53,7 +53,7 @@ http.createServer((req, res) => {
 					"Content-Type": "text/plain; charset=UTF-8"
 				};
 				res.writeHead(404, header);
-				res.write(`File　Not Found: ${decodedFilename}`);
+				res.write(`File Not Found: ${decodedFilename}`);
 				console.warn(err);
 				res.end();
 			});
